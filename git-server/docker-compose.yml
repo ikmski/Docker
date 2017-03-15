@@ -1,0 +1,35 @@
+version: '2'
+services:
+  git:
+    build: .
+    container_name: git-server
+    restart: always
+    volumes:
+      - git-data:/opt/git
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "2222:22"
+      - "9418:9418"
+
+  backup:
+    image: ikmski/datavolume-backup
+    volumes:
+      - git-data:/opt/git
+      - /etc/localtime:/etc/localtime:ro
+      - ./backup:/export
+    environment:
+      - TARGET_DIR=/opt/git
+      - NAME=git_backup
+
+  restore:
+    image: ikmski/datavolume-restore
+    volumes:
+      - git-data:/opt/git
+      - ./backup:/import
+    environment:
+      - TARGET_DIR=/opt/git
+
+volumes:
+  git-data:
+    driver: local
+
