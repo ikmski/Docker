@@ -1,0 +1,36 @@
+version: '2'
+services:
+  samba:
+    build: .
+    container_name: samba
+    restart: always
+    volumes:
+      - samba-data:/var/samba
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139/tcp"
+      - "445:445/tcp"
+
+  backup:
+    image: ikmski/datavolume-backup
+    volumes:
+      - samba-data:/var/samba
+      - /etc/localtime:/etc/localtime:ro
+      - ./backup:/export
+    environment:
+      - TARGET_DIR=/var/samba
+      - NAME=samba-backup
+
+  restore:
+    image: ikmski/datavolume-restore
+    volumes:
+      - samba-data:/var/samba
+      - ./backup:/import
+    environment:
+      - TARGET_DIR=/var/samba
+
+volumes:
+  samba-data:
+    driver: local
