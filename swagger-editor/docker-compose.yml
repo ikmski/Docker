@@ -1,0 +1,8 @@
+version: '2'
+services:
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    container_name: swagger-editor
+    restart: always
+    ports:
+      - "8001:8080"
