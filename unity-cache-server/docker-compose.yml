@@ -1,0 +1,16 @@
+version: "2"
+services:
+  unity-cache-server:
+    build: .
+    container_name: unity-cache-server
+    restart: always
+    volumes:
+      - cache-data:/opt/cache
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8126:8126"
+
+volumes:
+  cache-data:
+    driver: local
+
