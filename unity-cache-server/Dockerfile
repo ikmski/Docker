@@ -6,4 +6,4 @@ ADD src/ /src/
 
 EXPOSE 8126
 
-CMD ["node", "/src/main.js", "--nolegacy", "--path", "/opt/cache/cache5.0"]
+CMD ["node", "/src/main.js", "--nolegacy", "--silent", "--path", "/opt/cache/cache5.0"]
